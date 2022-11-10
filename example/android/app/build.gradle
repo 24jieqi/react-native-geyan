@@ -141,7 +141,10 @@ android {
         versionCode 1
         versionName "1.0"
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
-
+        manifestPlaceholders = [
+            GETUI_APPID: "PxnDDshlyj7d4edorykj24",
+            GT_INSTALL_CHANNEL: "getui"
+        ]
         if (isNewArchitectureEnabled()) {
             // We configure the CMake build only if you decide to opt-in for the New Architecture.
             externalNativeBuild {
@@ -212,10 +215,10 @@ android {
     }
     signingConfigs {
         debug {
-            storeFile file('debug.keystore')
-            storePassword 'android'
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
+            storeFile file('fruitschain.keystore')
+            storePassword 'hjgpiio'
+            keyAlias 'hjgpiio'
+            keyPassword 'hjgpiio'
         }
     }
     buildTypes {

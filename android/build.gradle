@@ -126,6 +126,10 @@ repositories {
 dependencies {
     //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"
+  // 个推基础库
+  implementation "com.getui:gtc:3.1.11.0"
+  // 个验SDK
+  implementation "com.getui:gysdk:3.1.0.0"
 // From node_modules
 }
 

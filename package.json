@@ -1,7 +1,7 @@
 {
   "name": "react-native-geyan",
   "version": "0.1.0",
-  "description": "test",
+  "description": "个推-个验一键登录react-native原生模块",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
   "types": "lib/typescript/index.d.ts",
@@ -40,13 +40,13 @@
     "ios",
     "android"
   ],
-  "repository": "https://github.com/Limoer96/react-native-geyan",
+  "repository": "https://github.com/hjfruit/react-native-geyan",
   "author": "limoer <myt19960503@outlook.com> (https://github.com/Limoer96)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Limoer96/react-native-geyan/issues"
+    "url": "https://github.com/hjfruit/react-native-geyan/issues"
   },
-  "homepage": "https://github.com/Limoer96/react-native-geyan#readme",
+  "homepage": "https://github.com/hjfruit/react-native-geyan#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
