@@ -55,6 +55,7 @@ android {
 repositories {
   mavenCentral()
   google()
+  maven { url 'https://mvn.getui.com/nexus/content/repositories/releases/' }
 
   def found = false
   def defaultDir = null

@@ -20,3 +20,7 @@ const Geyan = NativeModules.Geyan
 export function multiply(a: number, b: number): Promise<number> {
   return Geyan.multiply(a, b);
 }
+
+export function showActivity() {
+  Geyan.showActivity();
+}

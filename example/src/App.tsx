@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'react-native-geyan';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { multiply, showActivity } from 'react-native-geyan';
 
 export default function App() {
   const [result, setResult] = React.useState<number | undefined>();
@@ -13,6 +13,9 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text>Result: {result}</Text>
+      <TouchableOpacity onPress={() => showActivity()}>
+        <Text>Open Activity</Text>
+      </TouchableOpacity>
     </View>
   );
 }
