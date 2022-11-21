@@ -1,5 +1,4 @@
 import { NativeModules, Platform } from 'react-native';
-
 const LINKING_ERROR =
   `The package 'react-native-geyan' doesn't seem to be linked. Make sure: \n\n` +
   Platform.select({ ios: "- You have run 'pod install'\n", default: '' }) +
@@ -21,6 +20,10 @@ export function multiply(a: number, b: number): Promise<number> {
   return Geyan.multiply(a, b);
 }
 
-export function showActivity() {
-  Geyan.showActivity();
+interface GeyanConfig {
+  logo: string;
+}
+
+export function showActivity(config: GeyanConfig): Promise<string> {
+  return Geyan.showActivity(config);
 }

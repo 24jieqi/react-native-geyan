@@ -131,7 +131,8 @@ dependencies {
   implementation "com.getui:gtc:3.1.11.0"
   // 个验SDK
   implementation "com.getui:gysdk:3.1.0.0"
-// From node_modules
+  implementation 'com.github.bumptech.glide:glide:4.14.2'
+  annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
 }
 
 if (isNewArchitectureEnabled()) {
