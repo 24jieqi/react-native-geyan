@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.facebook.react.bridge.ActivityEventListener;
 import com.facebook.react.bridge.BaseActivityEventListener;
@@ -14,6 +15,10 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.module.annotations.ReactModule;
+import com.g.gysdk.GYManager;
+import com.g.gysdk.GYResponse;
+import com.g.gysdk.GyCallBack;
+import com.g.gysdk.GyConfig;
 import com.geyan.activity.ELoginActivity;
 
 @ReactModule(name = GeyanModule.NAME)
@@ -72,6 +77,35 @@ public class GeyanModule extends ReactContextBaseJavaModule {
         myPromise.reject(OPEN_ACTIVITY_ERROR, e);
         myPromise = null;
     }
+  }
+  protected void init(@Nullable String channel) {
+    GyConfig.Builder builder = GyConfig.with(this.getReactApplicationContext()).preLoginUseCache(true);
+    if (channel != null) {
+      builder.channel(channel);
+    }
+    builder.callBack(new GyCallBack() {
+      @Override
+      public void onSuccess(GYResponse gyResponse) {
+
+      }
+
+      @Override
+      public void onFailed(GYResponse gyResponse) {
+
+      }
+    });
+    GYManager.getInstance().init(builder.build());
+    GYManager.getInstance().ePreLogin(8000, new GyCallBack() {
+      @Override
+      public void onSuccess(GYResponse gyResponse) {
+
+      }
+
+      @Override
+      public void onFailed(GYResponse gyResponse) {
+
+      }
+    });
   }
 }
 
