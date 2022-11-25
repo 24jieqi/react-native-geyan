@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
-import { multiply, showActivity } from 'react-native-geyan';
+import { multiply, open, isPreLoginResultValid } from 'react-native-geyan';
 const logo = require('./assets/logo.png');
 
 export default function App() {
@@ -13,7 +13,12 @@ export default function App() {
   const resolved = Image.resolveAssetSource(logo);
   async function handleOpenActivity() {
     try {
-      const currentToken = await showActivity({ logo: resolved.uri });
+      const currentToken = await open({
+        logo: resolved.uri,
+        privacy: [
+          { text: '洪九果品一键登录协议', url: 'https://www.baidu.com' },
+        ],
+      });
       setToken(currentToken);
     } catch (error) {}
   }
@@ -24,6 +29,7 @@ export default function App() {
         <Text>Open Activity</Text>
       </TouchableOpacity>
       <Text>Token is: {token}</Text>
+      <Text>valid?: {isPreLoginResultValid()}</Text>
     </View>
   );
 }

@@ -2,6 +2,7 @@ package com.geyan;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.module.annotations.ReactModule;
 import com.g.gysdk.GYManager;
@@ -20,6 +22,8 @@ import com.g.gysdk.GYResponse;
 import com.g.gysdk.GyCallBack;
 import com.g.gysdk.GyConfig;
 import com.geyan.activity.ELoginActivity;
+
+import java.io.Serializable;
 
 @ReactModule(name = GeyanModule.NAME)
 public class GeyanModule extends ReactContextBaseJavaModule {
@@ -62,7 +66,7 @@ public class GeyanModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void showActivity(ReadableMap config, Promise promise) {
+  public void open(ReadableMap config, Promise promise) {
     Activity activity = getCurrentActivity();
     if (activity == null) {
       Log.d("Activity not exist", "Activity not exist");
@@ -71,12 +75,20 @@ public class GeyanModule extends ReactContextBaseJavaModule {
     myPromise = promise;
     try {
       Intent intent = new Intent(activity, ELoginActivity.class);
-      intent.putExtra(ELoginActivity.PASSED_INFO, config.getString("logo"));
+      intent.putExtra(ELoginActivity.LOGO_INFO, config.getString("logo"));
+      ReadableArray privacy = config.getArray("privacy");
+      Bundle args = new Bundle();
+      args.putSerializable("arraylist", (Serializable) privacy);
+      intent.putExtra(ELoginActivity.PRIVACY_INFO, args);
       activity.startActivityForResult(intent, REQUEST_CODE);
     } catch (Exception e) {
         myPromise.reject(OPEN_ACTIVITY_ERROR, e);
         myPromise = null;
     }
+  }
+  @ReactMethod
+  public boolean isPreLoginResultValid() {
+    return GYManager.getInstance().isPreLoginResultValid();
   }
   protected void init(@Nullable String channel) {
     GyConfig.Builder builder = GyConfig.with(this.getReactApplicationContext()).preLoginUseCache(true);

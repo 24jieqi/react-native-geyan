@@ -5,23 +5,36 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.ReadableMap;
+import com.g.gysdk.EloginActivityParam;
+import com.g.gysdk.GYManager;
+import com.g.gysdk.GYResponse;
+import com.g.gysdk.GyCallBack;
+import com.g.gysdk.GyPreloginResult;
 import com.geyan.R;
 import com.geyan.util.ViewUtil;
 
+import org.json.JSONObject;
+
 public class ELoginActivity extends BaseActivity {
-  public static final String PASSED_INFO = "com.reactnativegeyan.eloginactivity.passedinfo";
+  public static final String LOGO_INFO = "com.reactnativegeyan.eloginactivity.logo";
+  public static final String PRIVACY_INFO = "com.reactnativegeyan.eloginactivity.privacy";
   private static String TAG = ELoginActivity.class.getSimpleName();
 
-  private CheckBox checkBox;
-  private Button loginBtn;
   private ImageView imageView;
-
+  private CheckBox mCheckbox;
   @Override
   public void onCreate(Bundle saveInstanceState) {
     super.onCreate(saveInstanceState);
@@ -33,20 +46,100 @@ public class ELoginActivity extends BaseActivity {
     }
     setContentView(R.layout.activity_elogin);
     imageView = (ImageView) findViewById(R.id.logo_imageview);
-    String logo = getIntent().getStringExtra(PASSED_INFO);
+    String logo = getIntent().getStringExtra(LOGO_INFO);
     Glide.with(this).load(logo).into(imageView);
     toolbarMoveDownward();
+    elogin();
+  }
 
-    // 设置事件
-    loginBtn = (Button) findViewById(R.id.login_button);
-    loginBtn.setOnClickListener(new View.OnClickListener() {
+  private void elogin() {
+    TextView numberTv = findViewById(R.id.number_textview);
+    TextView sloganTv = findViewById(R.id.slogan_textview);
+    View loginBtn = findViewById(R.id.login_button);
+    CheckBox checkBox = findViewById(R.id.privacy_checkbox);
+    TextView privacyTv = findViewById(R.id.privacy_textview);
+    initPrivacyText(privacyTv);
+    mCheckbox = checkBox;
+    EloginActivityParam eloginActivityParam = new EloginActivityParam()
+      .setActivity(this)
+      .setNumberTextview(numberTv)
+      .setSloganTextview(sloganTv)
+      .setLoginButton(loginBtn)
+      .setPrivacyCheckbox(checkBox)
+      .setPrivacyTextview(privacyTv)
+      .setUiErrorListener((msg) -> {
+          Log.d("Error", msg);
+      })
+      .setLoginOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          Log.d(TAG, "一键登录按钮 onLoginClick:");
+          if (!mCheckbox.isChecked()) {
+            throw new IllegalStateException("请先仔细阅读协议并勾选，然后再点击登录");
+          }
+        }
+      });
+    GYManager.getInstance().eAccountLogin(eloginActivityParam, 5000, new GyCallBack() {
       @Override
-      public void onClick(View v) {
-        Intent intent = new Intent();
-        intent.putExtra("token", "this is token");
-        setResult(Activity.RESULT_OK, intent);
+      public void onSuccess(GYResponse gyResponse) {
+        try {
+          JSONObject jsonObject = new JSONObject(gyResponse.getMsg());
+          JSONObject data = jsonObject.getJSONObject("data");
+          String token = data.getString("token");
+          long expiredTime = data.getLong("expiredTime");
+          Intent intent = new Intent();
+          intent.putExtra("token", token);
+          setResult(Activity.RESULT_OK, intent);
+          finish();
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+      }
+
+      @Override
+      public void onFailed(GYResponse gyResponse) {
         finish();
       }
     });
+  }
+  private void initPrivacyText(TextView textView) {
+    textView.setLineSpacing(8.0F, 1.0F);
+    textView.setMovementMethod(LinkMovementMethod.getInstance());
+    GyPreloginResult preloginResult = GYManager.getInstance().getPreLoginResult();
+    textView.setText("");
+    textView.append("登录即认可");
+    textView.append(generateSpan(preloginResult.getPrivacyName(), preloginResult.getPrivacyUrl()));
+    textView.append("、");
+    Bundle args = getIntent().getBundleExtra(PRIVACY_INFO);
+    ReadableArray privacyList = (ReadableArray) args.getSerializable("arraylist");
+    for (int i=0; i< privacyList.size(); i += 1) {
+      ReadableMap config = privacyList.getMap(i);
+      String name = config.getString("text");
+      String url = config.getString("text");
+      textView.append(generateSpan(name, url));
+      if (i < privacyList.size() - 1) {
+        textView.append("、");
+      }
+    }
+    textView.append("并使⽤用本机号码登录");
+  }
+  private SpannableString generateSpan(final String name, final String url) {
+    SpannableString spannableString = new SpannableString(name);
+    spannableString.setSpan(new ClickableSpan() {
+      public void onClick(View view) {
+        Log.d(TAG, "点击了隐私协议：" + name + "  " + url);
+        ELoginWebActivity.start(ELoginActivity.this, url, name);
+      }
+
+      public void updateDrawState(TextPaint ds) {
+        try {
+          ds.setColor(0xFF3973FF);
+          ds.setUnderlineText(false);
+        } catch (Throwable t) {
+          t.printStackTrace();
+        }
+      }
+    }, 0, name.length(), 33);
+    return spannableString;
   }
 }

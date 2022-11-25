@@ -20,10 +20,27 @@ export function multiply(a: number, b: number): Promise<number> {
   return Geyan.multiply(a, b);
 }
 
+interface PrivacyItem {
+  text: string;
+  url: string;
+}
 interface GeyanConfig {
   logo: string;
+  privacy: PrivacyItem[];
 }
 
-export function showActivity(config: GeyanConfig): Promise<string> {
-  return Geyan.showActivity(config);
+/**
+ * 打开个验验证页面
+ * @param config
+ * @returns
+ */
+export function open(config: GeyanConfig): Promise<string> {
+  return Geyan.open(config);
+}
+
+/**
+ * 预登陆是否可用
+ */
+export function isPreLoginResultValid(): boolean {
+  return Geyan.isPreLoginResultValid();
 }
