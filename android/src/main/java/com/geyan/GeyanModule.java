@@ -2,7 +2,6 @@ package com.geyan;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -22,8 +21,9 @@ import com.g.gysdk.GYResponse;
 import com.g.gysdk.GyCallBack;
 import com.g.gysdk.GyConfig;
 import com.geyan.activity.ELoginActivity;
+import com.geyan.util.Privacy;
 
-import java.io.Serializable;
+import java.util.ArrayList;
 
 @ReactModule(name = GeyanModule.NAME)
 public class GeyanModule extends ReactContextBaseJavaModule {
@@ -58,13 +58,6 @@ public class GeyanModule extends ReactContextBaseJavaModule {
     return NAME;
   }
 
-  // Example method
-  // See https://reactnative.dev/docs/native-modules-android
-  @ReactMethod
-  public void multiply(double a, double b, Promise promise) {
-    promise.resolve(a * b);
-  }
-
   @ReactMethod
   public void open(ReadableMap config, Promise promise) {
     Activity activity = getCurrentActivity();
@@ -76,10 +69,13 @@ public class GeyanModule extends ReactContextBaseJavaModule {
     try {
       Intent intent = new Intent(activity, ELoginActivity.class);
       intent.putExtra(ELoginActivity.LOGO_INFO, config.getString("logo"));
-      ReadableArray privacy = config.getArray("privacy");
-      Bundle args = new Bundle();
-      args.putSerializable("arraylist", (Serializable) privacy);
-      intent.putExtra(ELoginActivity.PRIVACY_INFO, args);
+      ReadableArray privacyRawList = config.getArray("privacy");
+      ArrayList<Privacy> privacyList = new ArrayList<Privacy>();
+      for (int i=0; i < privacyRawList.size(); i += 1) {
+        ReadableMap current = privacyRawList.getMap(i);
+        privacyList.add(new Privacy(current.getString("text"), current.getString("url")));
+      }
+      intent.putExtra(ELoginActivity.PRIVACY_INFO, privacyList);
       activity.startActivityForResult(intent, REQUEST_CODE);
     } catch (Exception e) {
         myPromise.reject(OPEN_ACTIVITY_ERROR, e);
@@ -90,7 +86,8 @@ public class GeyanModule extends ReactContextBaseJavaModule {
   public boolean isPreLoginResultValid() {
     return GYManager.getInstance().isPreLoginResultValid();
   }
-  protected void init(@Nullable String channel) {
+  @ReactMethod
+  protected void init(@Nullable String channel, Promise promise) {
     GyConfig.Builder builder = GyConfig.with(this.getReactApplicationContext()).preLoginUseCache(true);
     if (channel != null) {
       builder.channel(channel);
@@ -98,26 +95,25 @@ public class GeyanModule extends ReactContextBaseJavaModule {
     builder.callBack(new GyCallBack() {
       @Override
       public void onSuccess(GYResponse gyResponse) {
+        GYManager.getInstance().ePreLogin(8000, new GyCallBack() {
+          @Override
+          public void onSuccess(GYResponse gyResponse) {
+            promise.resolve("预登录完成！");
+          }
 
+          @Override
+          public void onFailed(GYResponse gyResponse) {
+            promise.reject("PRE_LOGIN_FAILED", "预登录失败！" + gyResponse.getMsg());
+          }
+        });
       }
 
       @Override
       public void onFailed(GYResponse gyResponse) {
-
+      promise.reject("INIT_FAILED", "初始化失败！" + gyResponse.getMsg());
       }
     });
     GYManager.getInstance().init(builder.build());
-    GYManager.getInstance().ePreLogin(8000, new GyCallBack() {
-      @Override
-      public void onSuccess(GYResponse gyResponse) {
-
-      }
-
-      @Override
-      public void onFailed(GYResponse gyResponse) {
-
-      }
-    });
   }
 }
 

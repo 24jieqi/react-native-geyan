@@ -3,5 +3,11 @@
   <application>
     <activity android:name=".activity.BaseActivity" android:exported="false" android:configChanges="orientation|keyboardHidden|screenSize" android:launchMode="singleTask" />
     <activity android:name=".activity.ELoginActivity" android:exported="false" android:configChanges="orientation|keyboardHidden|screenSize" android:launchMode="singleTask" />
+    <activity
+      android:name=".activity.ELoginWebActivity"
+      android:exported="false"
+      android:configChanges="orientation|keyboardHidden|screenSize"
+      android:launchMode="singleTask"
+      android:screenOrientation="behind" />
   </application>
 </manifest>

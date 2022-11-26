@@ -16,17 +16,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.facebook.react.bridge.ReadableArray;
-import com.facebook.react.bridge.ReadableMap;
 import com.g.gysdk.EloginActivityParam;
 import com.g.gysdk.GYManager;
 import com.g.gysdk.GYResponse;
 import com.g.gysdk.GyCallBack;
 import com.g.gysdk.GyPreloginResult;
 import com.geyan.R;
+import com.geyan.util.Privacy;
 import com.geyan.util.ViewUtil;
 
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class ELoginActivity extends BaseActivity {
   public static final String LOGO_INFO = "com.reactnativegeyan.eloginactivity.logo";
@@ -90,7 +91,7 @@ public class ELoginActivity extends BaseActivity {
           Intent intent = new Intent();
           intent.putExtra("token", token);
           setResult(Activity.RESULT_OK, intent);
-          finish();
+//          finish();
         } catch (Exception e) {
           e.printStackTrace();
         }
@@ -98,7 +99,7 @@ public class ELoginActivity extends BaseActivity {
 
       @Override
       public void onFailed(GYResponse gyResponse) {
-        finish();
+//        finish();
       }
     });
   }
@@ -110,12 +111,11 @@ public class ELoginActivity extends BaseActivity {
     textView.append("登录即认可");
     textView.append(generateSpan(preloginResult.getPrivacyName(), preloginResult.getPrivacyUrl()));
     textView.append("、");
-    Bundle args = getIntent().getBundleExtra(PRIVACY_INFO);
-    ReadableArray privacyList = (ReadableArray) args.getSerializable("arraylist");
+    ArrayList<Privacy> privacyList = (ArrayList<Privacy>) getIntent().getSerializableExtra(PRIVACY_INFO);
     for (int i=0; i< privacyList.size(); i += 1) {
-      ReadableMap config = privacyList.getMap(i);
-      String name = config.getString("text");
-      String url = config.getString("text");
+      Privacy config = privacyList.get(i);
+      String name = config.text;
+      String url = config.url;
       textView.append(generateSpan(name, url));
       if (i < privacyList.size() - 1) {
         textView.append("、");

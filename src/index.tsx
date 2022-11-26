@@ -16,10 +16,6 @@ const Geyan = NativeModules.Geyan
       }
     );
 
-export function multiply(a: number, b: number): Promise<number> {
-  return Geyan.multiply(a, b);
-}
-
 interface PrivacyItem {
   text: string;
   url: string;
@@ -29,6 +25,14 @@ interface GeyanConfig {
   privacy: PrivacyItem[];
 }
 
+/**
+ * 个验初始化（初始化SDK，预登录）
+ * @param channel 渠道
+ * @returns
+ */
+export function init(channel?: string): Promise<string> {
+  return Geyan.init(channel);
+}
 /**
  * 打开个验验证页面
  * @param config
