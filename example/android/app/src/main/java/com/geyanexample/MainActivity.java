@@ -3,7 +3,6 @@ package com.geyanexample;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
-import com.geyan.RNGeYan;
 
 public class MainActivity extends ReactActivity {
 
@@ -14,11 +13,6 @@ public class MainActivity extends ReactActivity {
   @Override
   protected String getMainComponentName() {
     return "GeyanExample";
-  }
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(null);
-    RNGeYan.init(this);
   }
   /**
    * Returns the instance of the {@link ReactActivityDelegate}. There the RootView is created and
