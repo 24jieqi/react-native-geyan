@@ -1,7 +1,14 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
-import { init, open, isPreLoginResultValid } from 'react-native-geyan';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  NativeModules,
+} from 'react-native';
+import { init, open } from 'react-native-geyan';
 const logo = require('./assets/logo.png');
 
 export default function App() {
@@ -29,13 +36,19 @@ export default function App() {
         console.log('初始化失败！', err);
       });
   }, []);
+  React.useEffect(() => {
+    const appid = 'PxnDDshlyj7d4edorykj24';
+    NativeModules.Geyan.init({ appid }).then((res) => {
+      setToken(res);
+    });
+  }, []);
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={handleOpenActivity}>
         <Text>Open Activity</Text>
       </TouchableOpacity>
       <Text>Token is: {token}</Text>
-      <Text>valid?: {isPreLoginResultValid()}</Text>
+      {/* <Text>valid?: {isPreLoginResultValid()}</Text> */}
     </View>
   );
 }

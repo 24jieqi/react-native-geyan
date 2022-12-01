@@ -1,12 +1,6 @@
-
-#ifdef RCT_NEW_ARCH_ENABLED
-#import "RNGeyanSpec.h"
-
-@interface Geyan : NSObject <NativeGeyanSpec>
-#else
 #import <React/RCTBridgeModule.h>
+#import <GeYanSdk/GeYanSdk.h>
 
-@interface Geyan : NSObject <RCTBridgeModule>
-#endif
+@interface Geyan : NSObject<RCTBridgeModule>
 
 @end

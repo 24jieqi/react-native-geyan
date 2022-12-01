@@ -18,6 +18,9 @@ Pod::Spec.new do |s|
 
   s.dependency "React-Core"
 
+  s.vendored_frameworks = "ios/SdkLib/GeYanSdk.framework", "ios/SdkLib/GTCommonSDK.framework/"
+  s.libraries = "resolv.9"
+
   # Don't install the dependencies when we run `pod install` in the old architecture.
   if ENV['RCT_NEW_ARCH_ENABLED'] == '1' then
     s.compiler_flags = folly_compiler_flags + " -DRCT_NEW_ARCH_ENABLED=1"
