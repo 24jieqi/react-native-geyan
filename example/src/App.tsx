@@ -1,13 +1,6 @@
 import * as React from 'react';
 
-import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  NativeModules,
-} from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
 import { init, open } from 'react-native-geyan';
 const logo = require('./assets/logo.png');
 
@@ -28,19 +21,15 @@ export default function App() {
     }
   }
   React.useEffect(() => {
-    init()
+    init({
+      appid: 'PxnDDshlyj7d4edorykj24',
+    })
       .then(() => {
         console.log('预登录成功！');
       })
       .catch((err) => {
         console.log('初始化失败！', err);
       });
-  }, []);
-  React.useEffect(() => {
-    const appid = 'PxnDDshlyj7d4edorykj24';
-    NativeModules.Geyan.init({ appid }).then((res) => {
-      setToken(res);
-    });
   }, []);
   return (
     <View style={styles.container}>

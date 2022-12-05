@@ -70,10 +70,12 @@ public class GeyanModule extends ReactContextBaseJavaModule {
       Intent intent = new Intent(activity, ELoginActivity.class);
       intent.putExtra(ELoginActivity.LOGO_INFO, config.getString("logo"));
       ReadableArray privacyRawList = config.getArray("privacy");
-      ArrayList<Privacy> privacyList = new ArrayList<Privacy>();
-      for (int i=0; i < privacyRawList.size(); i += 1) {
-        ReadableMap current = privacyRawList.getMap(i);
-        privacyList.add(new Privacy(current.getString("text"), current.getString("url")));
+      ArrayList<Privacy> privacyList = new ArrayList<>();
+      if (privacyRawList != null) {
+        for (int i=0; i < privacyRawList.size(); i += 1) {
+          ReadableMap current = privacyRawList.getMap(i);
+          privacyList.add(new Privacy(current.getString("text"), current.getString("url")));
+        }
       }
       intent.putExtra(ELoginActivity.PRIVACY_INFO, privacyList);
       activity.startActivityForResult(intent, REQUEST_CODE);
@@ -87,15 +89,16 @@ public class GeyanModule extends ReactContextBaseJavaModule {
     return GYManager.getInstance().isPreLoginResultValid();
   }
   @ReactMethod
-  protected void init(@Nullable String channel, Promise promise) {
+  protected void init(ReadableMap config, Promise promise) {
     GyConfig.Builder builder = GyConfig.with(this.getReactApplicationContext()).preLoginUseCache(true);
+    String channel = config.getString("channel");
     if (channel != null) {
       builder.channel(channel);
     }
     builder.callBack(new GyCallBack() {
       @Override
       public void onSuccess(GYResponse gyResponse) {
-        GYManager.getInstance().ePreLogin(8000, new GyCallBack() {
+        GYManager.getInstance().ePreLogin(10000, new GyCallBack() {
           @Override
           public void onSuccess(GYResponse gyResponse) {
             promise.resolve("预登录完成！");

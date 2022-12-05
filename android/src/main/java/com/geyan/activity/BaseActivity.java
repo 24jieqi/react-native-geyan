@@ -23,10 +23,10 @@ public class BaseActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     super.setContentView(R.layout.activity_base);
     frameLayout = (FrameLayout) findViewById(R.id.layout_content);
-
     toolbar = (Toolbar) findViewById(R.id.toolbar);
     toolbar.setTitle("返回");
     toolbar.setTitleTextColor(Color.BLACK);
+    toolbar.setMinimumHeight(60);
 //    toolbar.setNavigationIcon();
     toolbar.setNavigationOnClickListener((v) -> { onBackPressed(); });
   }

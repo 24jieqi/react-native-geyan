@@ -4,6 +4,14 @@
   android:layout_height="match_parent"
   android:fitsSystemWindows="true"
   android:background="#FFFFFFFF">
+  <android.widget.Toolbar
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffffff"
+    android:navigationIcon="@mipmap/icon_back"
+    android:title="@string/login_title"
+    android:id="@+id/toolbar"
+    />
   <ImageView
     android:layout_width="66dp"
     android:layout_height="66dp"

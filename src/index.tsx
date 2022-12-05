@@ -25,13 +25,21 @@ interface GeyanConfig {
   privacy: PrivacyItem[];
 }
 
+interface GeyanInitConfig {
+  /**
+   * 渠道
+   */
+  channel?: string;
+  appid?: string;
+}
+
 /**
  * 个验初始化（初始化SDK，预登录）
  * @param channel 渠道
  * @returns
  */
-export function init(channel?: string): Promise<string> {
-  return Geyan.init(channel);
+export function init(config: GeyanInitConfig): Promise<string> {
+  return Geyan.init(config);
 }
 /**
  * 打开个验验证页面

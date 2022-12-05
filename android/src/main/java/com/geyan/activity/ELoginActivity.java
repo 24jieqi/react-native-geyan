@@ -14,6 +14,9 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toolbar;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.g.gysdk.EloginActivityParam;
@@ -29,27 +32,28 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class ELoginActivity extends BaseActivity {
+public class ELoginActivity extends AppCompatActivity {
   public static final String LOGO_INFO = "com.reactnativegeyan.eloginactivity.logo";
   public static final String PRIVACY_INFO = "com.reactnativegeyan.eloginactivity.privacy";
-  private static String TAG = ELoginActivity.class.getSimpleName();
-
-  private ImageView imageView;
+  private static final String TAG = ELoginActivity.class.getSimpleName();
+  private Toolbar toolbar;
   private CheckBox mCheckbox;
   @Override
   public void onCreate(Bundle saveInstanceState) {
     super.onCreate(saveInstanceState);
+//    super.onCreate(saveInstanceState);
     ViewUtil.setStatusBarTransparent(Color.TRANSPARENT, Color.TRANSPARENT, this);
     ViewUtil.setStatusBarLightMode(true, this);
-
-    if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
-      findViewById(android.R.id.content).setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-    }
+//
+//    if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
+//      findViewById(android.R.id.content).setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+//    }
     setContentView(R.layout.activity_elogin);
-    imageView = (ImageView) findViewById(R.id.logo_imageview);
+    toolbar = (Toolbar) findViewById(R.id.toolbar);
+    toolbar.setNavigationOnClickListener((v) -> { onBackPressed(); });
+    ImageView imageView = (ImageView) findViewById(R.id.logo_imageview);
     String logo = getIntent().getStringExtra(LOGO_INFO);
     Glide.with(this).load(logo).into(imageView);
-    toolbarMoveDownward();
     elogin();
   }
 
