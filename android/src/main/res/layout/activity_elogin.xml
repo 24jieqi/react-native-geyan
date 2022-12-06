@@ -18,7 +18,8 @@
     android:id="@+id/logo_imageview"
     android:layout_centerHorizontal="true"
     android:layout_marginTop="100dp"
-    android:layout_alignParentTop="true"/>
+    android:layout_alignParentTop="true"
+    android:contentDescription="@string/app_logo" />
   <TextView
     android:id="@+id/number_textview"
     android:layout_width="wrap_content"
@@ -28,7 +29,7 @@
     android:layout_centerHorizontal="true"
     android:textSize="24sp"
     android:textColor="#FF3D424C"
-    android:text="number_textview" />
+    android:text="@string/number_textview" />
   <TextView
     android:id="@+id/slogan_textview"
     android:layout_width="wrap_content"
@@ -36,15 +37,15 @@
     android:layout_marginTop="3dp"
     android:layout_below="@id/number_textview"
     android:layout_centerHorizontal="true"
-    android:textSize="10sp"
+    android:textSize="11sp"
     android:textColor="#FFA8A8A8"
-    android:text="slogan_textview"
+    android:text="@string/slogan_textview"
     />
   <Button
     android:id="@+id/login_button"
     android:layout_width="268dp"
     android:layout_height="wrap_content"
-    android:text="本机号码一键登录"
+    android:text="@string/btn_text"
     android:layout_centerInParent="true"
     android:layout_centerHorizontal="true"
     android:background="@drawable/login_btn_normal"
@@ -54,26 +55,25 @@
     android:gravity="center" />
   <CheckBox
     android:id="@+id/privacy_checkbox"
-    android:layout_width="20dp"
-    android:layout_height="20dp"
+    android:layout_width="16dp"
+    android:layout_height="16dp"
     android:button="@null"
     android:background="@drawable/login_checkbox_bg"
-    android:layout_marginLeft="15dp"
+    android:layout_marginStart="12dp"
     android:layout_alignTop="@id/privacy_textview"
     />
-
   <TextView
     android:id="@+id/privacy_textview"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_toRightOf="@id/privacy_checkbox"
-    android:layout_marginLeft="3dp"
-    android:layout_marginRight="15dp"
-    android:layout_marginBottom="15dp"
+    android:layout_toEndOf="@id/privacy_checkbox"
+    android:layout_marginStart="4dp"
+    android:layout_marginEnd="12dp"
+    android:layout_marginBottom="12dp"
     android:layout_alignParentBottom="true"
-    android:textSize="10sp"
+    android:textSize="11sp"
     android:textColor="#FFA8A8A8"
     android:textColorHighlight="#00000000"
-    android:text="privacy\n_\ntextview"
+    android:text="@string/privacy_textview"
     />
 </RelativeLayout>

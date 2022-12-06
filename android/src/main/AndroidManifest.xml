@@ -1,8 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.geyan">
   <application>
-    <activity android:name=".activity.BaseActivity" android:exported="false" android:configChanges="orientation|keyboardHidden|screenSize" android:launchMode="singleTask" />
-    <activity android:name=".activity.ELoginActivity" android:exported="false" android:configChanges="orientation|keyboardHidden|screenSize" android:launchMode="singleTask" />
+    <activity
+      android:name=".activity.ELoginActivity"
+      android:exported="false"
+      android:configChanges="orientation|keyboardHidden|screenSize"
+      android:launchMode="singleTask" />
     <activity
       android:name=".activity.ELoginWebActivity"
       android:exported="false"

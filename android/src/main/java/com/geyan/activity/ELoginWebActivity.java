@@ -9,14 +9,17 @@ import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toolbar;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.geyan.R;
-
+import com.geyan.util.ViewUtil;
 
 /**
  * 一键登录的隐私协议页
  */
-public class ELoginWebActivity extends BaseActivity {
+public class ELoginWebActivity extends AppCompatActivity {
   private WebView webView;
 
   public static void start(Context context, String url, String title) {
@@ -34,15 +37,11 @@ public class ELoginWebActivity extends BaseActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
-    // 协议页面没设置沉浸式
-
     setContentView(R.layout.activity_elogin_web);
-
-    toolbar.setTitleTextColor(Color.BLACK);
-    toolbar.setNavigationIcon(R.drawable.ic_back);
+    ViewUtil.setStatusBarTransparent(Color.WHITE, Color.TRANSPARENT, this);
+    ViewUtil.setStatusBarLightMode(true, this);
+    Toolbar toolbar = findViewById(R.id.privacy_toolbar);
     toolbar.setTitle(getIntent().getStringExtra("title"));
-
     toolbar.setNavigationOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
@@ -57,10 +56,7 @@ public class ELoginWebActivity extends BaseActivity {
         finish();
       }
     });
-    // 协议页面没设置沉浸式，不需要调整
-    // toolbarMoveDownward();
-
-    initWebview();
+    initWebView();
   }
 
   @Override
@@ -91,14 +87,12 @@ public class ELoginWebActivity extends BaseActivity {
     super.onDestroy();
   }
 
-  private void initWebview() {
-    webView = (WebView) findViewById(R.id.elogin_web_web);
+  private void initWebView() {
+    webView = findViewById(R.id.elogin_web_web);
 
     try {
       WebSettings settings = webView.getSettings();
       settings.setJavaScriptEnabled(true);
-      settings.setSavePassword(false);
-//            webView.setWebChromeClient(new WebChromeClient());
       webView.setWebViewClient(new WebViewClient());
       settings.setAllowFileAccess(false);
       settings.setAllowContentAccess(true);

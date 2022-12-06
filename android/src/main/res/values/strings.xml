@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="login_title">一键登录</string>
+    <string name="privacy_title">服务与隐私协议</string>
+  <string name="privacy_textview">privacy\n_\ntextview</string>
+  <string name="btn_text">本机号码一键登录</string>
+  <string name="slogan_textview">slogan_textview</string>
+  <string name="number_textview">number_textview</string>
+  <string name="app_logo">app_logo</string>
 </resources>
+

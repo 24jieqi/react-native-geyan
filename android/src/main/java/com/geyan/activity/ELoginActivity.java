@@ -1,9 +1,9 @@
 package com.geyan.activity;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.TextPaint;
@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,20 +37,15 @@ public class ELoginActivity extends AppCompatActivity {
   public static final String LOGO_INFO = "com.reactnativegeyan.eloginactivity.logo";
   public static final String PRIVACY_INFO = "com.reactnativegeyan.eloginactivity.privacy";
   private static final String TAG = ELoginActivity.class.getSimpleName();
-  private Toolbar toolbar;
   private CheckBox mCheckbox;
+  private ProgressDialog dialog;
   @Override
   public void onCreate(Bundle saveInstanceState) {
     super.onCreate(saveInstanceState);
-//    super.onCreate(saveInstanceState);
     ViewUtil.setStatusBarTransparent(Color.TRANSPARENT, Color.TRANSPARENT, this);
     ViewUtil.setStatusBarLightMode(true, this);
-//
-//    if (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP) {
-//      findViewById(android.R.id.content).setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-//    }
     setContentView(R.layout.activity_elogin);
-    toolbar = (Toolbar) findViewById(R.id.toolbar);
+    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     toolbar.setNavigationOnClickListener((v) -> { onBackPressed(); });
     ImageView imageView = (ImageView) findViewById(R.id.logo_imageview);
     String logo = getIntent().getStringExtra(LOGO_INFO);
@@ -78,24 +74,27 @@ public class ELoginActivity extends AppCompatActivity {
       .setLoginOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-          Log.d(TAG, "一键登录按钮 onLoginClick:");
           if (!mCheckbox.isChecked()) {
+            showToast("请先仔细阅读协议并勾选，然后再点击登录");
+            // 抛出错误，以免SDK登录调用
             throw new IllegalStateException("请先仔细阅读协议并勾选，然后再点击登录");
           }
+          showDialog();
         }
       });
     GYManager.getInstance().eAccountLogin(eloginActivityParam, 5000, new GyCallBack() {
       @Override
       public void onSuccess(GYResponse gyResponse) {
         try {
+          hideDialog();
+          showToast("登录成功");
           JSONObject jsonObject = new JSONObject(gyResponse.getMsg());
           JSONObject data = jsonObject.getJSONObject("data");
           String token = data.getString("token");
-          long expiredTime = data.getLong("expiredTime");
           Intent intent = new Intent();
           intent.putExtra("token", token);
           setResult(Activity.RESULT_OK, intent);
-//          finish();
+          finish();
         } catch (Exception e) {
           e.printStackTrace();
         }
@@ -103,10 +102,13 @@ public class ELoginActivity extends AppCompatActivity {
 
       @Override
       public void onFailed(GYResponse gyResponse) {
-//        finish();
+        showToast("一键登录失败：" + gyResponse);
+        hideDialog();
+        finish();
       }
     });
   }
+
   private void initPrivacyText(TextView textView) {
     textView.setLineSpacing(8.0F, 1.0F);
     textView.setMovementMethod(LinkMovementMethod.getInstance());
@@ -127,14 +129,13 @@ public class ELoginActivity extends AppCompatActivity {
     }
     textView.append("并使⽤用本机号码登录");
   }
+
   private SpannableString generateSpan(final String name, final String url) {
     SpannableString spannableString = new SpannableString(name);
     spannableString.setSpan(new ClickableSpan() {
       public void onClick(View view) {
-        Log.d(TAG, "点击了隐私协议：" + name + "  " + url);
         ELoginWebActivity.start(ELoginActivity.this, url, name);
       }
-
       public void updateDrawState(TextPaint ds) {
         try {
           ds.setColor(0xFF3973FF);
@@ -145,5 +146,35 @@ public class ELoginActivity extends AppCompatActivity {
       }
     }, 0, name.length(), 33);
     return spannableString;
+  }
+
+  /**
+   * android show toast
+   */
+  private void showToast(final String message) {
+    runOnUiThread(() -> {Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();});
+  }
+
+  /**
+   * android show dialog
+   */
+  private void showDialog() {
+    runOnUiThread(() -> {
+      if (dialog == null) {
+        dialog = new ProgressDialog(ELoginActivity.this);
+      }
+      dialog.setMessage("认证中...");
+      dialog.setCancelable(false);
+      dialog.show();
+    });
+  }
+
+  /**
+   * android hide dialog
+   */
+  private void hideDialog() {
+    if (dialog != null) {
+      dialog.hide();
+    }
   }
 }
