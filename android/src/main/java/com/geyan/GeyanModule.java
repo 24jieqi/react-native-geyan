@@ -66,6 +66,10 @@ public class GeyanModule extends ReactContextBaseJavaModule {
       return;
     }
     myPromise = promise;
+    if (!isPreLoginResultValid()) {
+      myPromise.reject("PRE_LOGIN_ERROR", "预登录失败！");
+      return;
+    }
     try {
       Intent intent = new Intent(activity, ELoginActivity.class);
       intent.putExtra(ELoginActivity.LOGO_INFO, config.getString("logo"));

@@ -34,10 +34,9 @@ export default function App() {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={handleOpenActivity}>
-        <Text>Open Activity</Text>
+        <Text>OpenActivity</Text>
       </TouchableOpacity>
       <Text>Token is: {token}</Text>
-      {/* <Text>valid?: {isPreLoginResultValid()}</Text> */}
     </View>
   );
 }
