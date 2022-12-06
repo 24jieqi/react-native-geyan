@@ -1,16 +1,32 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  StatusBar,
+  Platform,
+} from 'react-native';
 import { init, open } from 'react-native-geyan';
 const logo = require('./assets/logo.png');
 
 export default function App() {
   const [token, setToken] = React.useState('');
-  const resolved = Image.resolveAssetSource(logo);
+  React.useEffect(() => {
+    const entry = StatusBar.pushStackEntry({
+      barStyle: 'dark-content',
+      translucent: true,
+    });
+    Platform.OS === 'android' && StatusBar.setBackgroundColor('transparent');
+    return () => {
+      StatusBar.popStackEntry(entry);
+    };
+  });
   async function handleOpenActivity() {
     try {
       const currentToken = await open({
-        logo: resolved.uri,
+        logo,
         privacy: [
           { text: '洪九果品一键登录协议', url: 'https://www.hjfruit.com' },
         ],
@@ -33,10 +49,10 @@ export default function App() {
   }, []);
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={handleOpenActivity}>
-        <Text>OpenActivity</Text>
+      <TouchableOpacity style={styles.btnWrapper} onPress={handleOpenActivity}>
+        <Text style={styles.btnText}>一键登录</Text>
       </TouchableOpacity>
-      <Text>Token is: {token}</Text>
+      <Text style={styles.resultText}>Token is: {token}</Text>
     </View>
   );
 }
@@ -44,12 +60,19 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
+    paddingHorizontal: 12,
   },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
+  btnWrapper: {
+    backgroundColor: '#0065fe',
+    padding: 12,
+    borderRadius: 5,
+  },
+  btnText: {
+    textAlign: 'center',
+    color: '#ffffff',
+  },
+  resultText: {
+    marginTop: 8,
   },
 });
