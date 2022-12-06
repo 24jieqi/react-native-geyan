@@ -1,4 +1,9 @@
-import { NativeModules, Platform } from 'react-native';
+import {
+  Image,
+  ImageSourcePropType,
+  NativeModules,
+  Platform,
+} from 'react-native';
 const LINKING_ERROR =
   `The package 'react-native-geyan' doesn't seem to be linked. Make sure: \n\n` +
   Platform.select({ ios: "- You have run 'pod install'\n", default: '' }) +
@@ -16,12 +21,18 @@ const Geyan = NativeModules.Geyan
       }
     );
 
-interface PrivacyItem {
+export interface PrivacyItem {
   text: string;
   url: string;
 }
-interface GeyanConfig {
-  logo: string;
+export interface GeyanConfig {
+  /**
+   * 应用图标（用于一键登录页logo露出）
+   */
+  logo: ImageSourcePropType;
+  /**
+   * 自定义的隐私策略（若无请传空数组）
+   */
   privacy: PrivacyItem[];
 }
 
@@ -30,12 +41,15 @@ interface GeyanInitConfig {
    * 渠道
    */
   channel?: string;
+  /**
+   * appid（ios only）
+   */
   appid?: string;
 }
 
 /**
  * 个验初始化（初始化SDK，预登录）
- * @param channel 渠道
+ * @param config
  * @returns
  */
 export function init(config: GeyanInitConfig): Promise<string> {
@@ -47,11 +61,12 @@ export function init(config: GeyanInitConfig): Promise<string> {
  * @returns
  */
 export function open(config: GeyanConfig): Promise<string> {
-  return Geyan.open(config);
+  const resolved = Image.resolveAssetSource(config.logo);
+  return Geyan.open({ ...config, logo: resolved.uri });
 }
 
 /**
- * 预登陆是否可用
+ * 预登录是否可用
  */
 export function isPreLoginResultValid(): boolean {
   return Geyan.isPreLoginResultValid();
