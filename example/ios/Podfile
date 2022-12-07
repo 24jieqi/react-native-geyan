@@ -43,7 +43,6 @@ target 'GeyanExample' do
     installer.pods_project.targets.each_with_index do |target|
       target.build_configurations.each_with_index do |config, index|
         config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64", "i386"
-        puts config.build_settings
       end
     end
     

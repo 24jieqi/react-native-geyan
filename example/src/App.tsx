@@ -27,9 +27,6 @@ export default function App() {
     try {
       const currentToken = await open({
         logo,
-        privacy: [
-          { text: '洪九果品一键登录协议', url: 'https://www.hjfruit.com' },
-        ],
       });
       setToken(currentToken);
     } catch (error) {
@@ -41,7 +38,7 @@ export default function App() {
       appid: 'PxnDDshlyj7d4edorykj24',
     })
       .then(() => {
-        console.log('预登录成功！');
+        console.log('初始化成功！');
       })
       .catch((err) => {
         console.log('初始化失败！', err);

@@ -34,10 +34,12 @@ android {
 
 ### iOS
 
+确保`Bundle Identifier`和个验后台配置一致
+
 ## Usage
 
 ```js
-import { open, init, isPreLoginResultValid } from 'react-native-geyan';
+import { open, init, close, isPreLoginResultValid } from 'react-native-geyan';
 const logo = require('./assets/logo.png');
 
 init({
@@ -51,19 +53,17 @@ async function startELogin() {
   try {
     const token = await open({
       logo,
-      privacy: [
-        {
-          text: 'xx custom privacy',
-          url: 'privacy url',
-        },
-      ],
     });
     console.log(token: `${token}`)
   } catch(e) {
     // ...
   }
+  // iOS only
+  await close();
 }
 ```
+
+> iOS需要手动调用`close`关闭一键登录页面
 
 更详细的使用方式见`example`
 
@@ -71,15 +71,44 @@ async function startELogin() {
 
 ### `init(config: GeyanInitConfig): Promise<string>`
 
+```ts
+interface GeyanInitConfig {
+  /**
+   * 渠道（Android only）
+   */
+  channel?: string;
+  /**
+   * appid（iOS only）
+   */
+  appid: string;
+}
+```
+
 初始化 SDK 并进行预登录
 
-### `isPreLoginResultValid(): boolean`
-
-获取预登录是否有效
 
 ### `open(config: GeyanConfig): Promise<string>`
 
+```ts
+interface GeyanConfig {
+  /**
+   * 应用图标（用于一键登录页logo露出）
+   */
+  logo: ImageSourcePropType;
+  /**
+   * 自定义的隐私策略 (Android only) (若无请传空数组)
+   */
+  privacy?: PrivacyItem[];
+}
+```
+
 打开一键登录页，成功后返回`token`
+
+### `close(): Promise`
+
+关闭一键登录页面
+
+> 仅iOS支持
 
 ## Contributing
 

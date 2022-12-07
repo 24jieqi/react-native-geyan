@@ -21,7 +21,7 @@
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libGeyan.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGeyan.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3E7B5881CC2AC0600A0062D /* Geyan.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Geyan.h; sourceTree = "<group>"; };
-		BFE7675729361E28008D34C0 /* Geyan.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Geyan.m; sourceTree = "<group>"; };
+		BFE7675729361E28008D34C0 /* Geyan.m */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.c.objc; path = Geyan.m; sourceTree = "<group>"; tabWidth = 2; };
 		BFE76759293621DA008D34C0 /* TYRZResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TYRZResource.bundle; sourceTree = "<group>"; };
 		BFE7675A293621DA008D34C0 /* GeYanSdk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GeYanSdk.framework; sourceTree = "<group>"; };
 		BFE7675B293621DA008D34C0 /* GTCommonSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GTCommonSDK.framework; sourceTree = "<group>"; };

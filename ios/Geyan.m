@@ -7,7 +7,6 @@ RCT_EXPORT_MODULE()
 RCT_EXPORT_METHOD(init:(NSDictionary *)options resolver:(RCTPromiseResolveBlock)resolve rejector:(RCTPromiseRejectBlock) reject)
 {
   NSString *appid = options[@"appid"];
-
   if (appid) {
     dispatch_async(dispatch_get_main_queue(), ^{
       @try {
@@ -32,7 +31,7 @@ RCT_EXPORT_METHOD(init:(NSDictionary *)options resolver:(RCTPromiseResolveBlock)
   }
 }
 
-RCT_EXPORT_METHOD(open:(RCTPromiseResolveBlock)resolve rejector:(RCTPromiseRejectBlock) reject)
+RCT_EXPORT_METHOD(open:(NSDictionary *)options resolver:(RCTPromiseResolveBlock)resolve rejector:(RCTPromiseRejectBlock) reject)
 {
   [GeYanSdk preGetToken:^(NSDictionary * _Nullable verifyDictionary) {
     NSNumber *code = verifyDictionary[@"code"];
@@ -43,20 +42,22 @@ RCT_EXPORT_METHOD(open:(RCTPromiseResolveBlock)resolve rejector:(RCTPromiseRejec
       GyAuthViewModel *viewModel = [GyAuthViewModel new];
       viewModel.switchButtonHidden = @YES;
      
-      UIImage *logo = [UIImage imageNamed:@"GeyanLogo"];
-      if (logo) {
+      if (options[@"logo"]) {
+        NSURL *logoURL = [NSURL URLWithString: options[@"logo"]];
+        NSData *logoData = [NSData dataWithContentsOfURL:logoURL];
+        UIImage *logo = [UIImage imageWithData:logoData];
         viewModel.appLogo = logo;
       }
       
       [GeYanSdk oneTapLogin:rootVC withViewModel:viewModel andCallback:^(NSDictionary * _Nullable verifyDictionary) {
-        NSNumber *code = verifyDictionary[@"code"];
-        if ([code isEqualToNumber:@30000]) {
-          NSLog(@"个验===>一键登录成功 result: %@", verifyDictionary);
-          resolve(verifyDictionary);
-        } else {
-          NSLog(@"个验===>一键登录失败 result: %@", verifyDictionary);
-          reject(@"geyan failed", verifyDictionary[@"msg"], nil);
-        }
+          NSNumber *code = verifyDictionary[@"code"];
+          if ([code isEqualToNumber:@30000]) {
+            NSLog(@"个验===>一键登录成功 result: %@", verifyDictionary);
+            resolve(verifyDictionary[@"token"]);
+          } else {
+            NSLog(@"个验===>一键登录失败 result: %@", verifyDictionary);
+            reject(@"geyan failed", verifyDictionary[@"msg"], nil);
+          }
       }];
     } else {
       NSLog(@"个验===>预登录失败 result: %@", verifyDictionary);
@@ -70,7 +71,7 @@ RCT_EXPORT_METHOD(close:(RCTPromiseResolveBlock)resolve rejector:(RCTPromiseReje
   @try {
     [GeYanSdk closeAuthVC:^{
       NSLog(@"个验===>关闭成功");
-      resolve(@YES);
+      resolve(nil);
     }];
   } @catch (NSException *exception) {
     NSLog(@"个验===>关闭失败 err: %@", exception);

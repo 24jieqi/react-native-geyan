@@ -31,20 +31,21 @@ export interface GeyanConfig {
    */
   logo: ImageSourcePropType;
   /**
-   * 自定义的隐私策略（若无请传空数组）
+   * 自定义的隐私策略 (Android only) (若无请传空数组)
+   * 仅适用于安卓平台
    */
-  privacy: PrivacyItem[];
+  privacy?: PrivacyItem[];
 }
 
 interface GeyanInitConfig {
   /**
-   * 渠道
+   * 渠道（Android only）
    */
   channel?: string;
   /**
-   * appid（ios only）
+   * appid（iOS only）
    */
-  appid?: string;
+  appid: string;
 }
 
 /**
@@ -66,8 +67,16 @@ export function open(config: GeyanConfig): Promise<string> {
 }
 
 /**
+ * 关闭个验页面 (iOS only)
+ * @returns
+ */
+export function close(): Promise<null> {
+  return Geyan?.close();
+}
+
+/**
  * 预登录是否可用
  */
 export function isPreLoginResultValid(): boolean {
-  return Geyan.isPreLoginResultValid();
+  return Geyan?.isPreLoginResultValid();
 }
