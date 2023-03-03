@@ -53,7 +53,7 @@ RCT_EXPORT_METHOD(open:(NSDictionary *)options resolver:(RCTPromiseResolveBlock)
           NSNumber *code = verifyDictionary[@"code"];
           if ([code isEqualToNumber:@30000]) {
             NSLog(@"个验===>一键登录成功 result: %@", verifyDictionary);
-            resolve(verifyDictionary[@"token"]);
+            resolve(verifyDictionary);
           } else {
             NSLog(@"个验===>一键登录失败 result: %@", verifyDictionary);
             reject(@"geyan failed", verifyDictionary[@"msg"], nil);
