@@ -25,10 +25,10 @@ export default function App() {
   });
   async function handleOpenActivity() {
     try {
-      const currentToken = await open({
+      const result = await open({
         logo,
       });
-      setToken(currentToken);
+      setToken(result.token);
     } catch (error) {
       console.log(error);
     }

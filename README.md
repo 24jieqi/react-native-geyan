@@ -63,7 +63,7 @@ async function startELogin() {
 }
 ```
 
-> iOS需要手动调用`close`关闭一键登录页面
+> iOS 需要手动调用`close`关闭一键登录页面
 
 更详细的使用方式见`example`
 
@@ -86,8 +86,7 @@ interface GeyanInitConfig {
 
 初始化 SDK 并进行预登录
 
-
-### `open(config: GeyanConfig): Promise<string>`
+### `open(config: GeyanConfig): Promise<GeyanResult>`
 
 ```ts
 interface GeyanConfig {
@@ -108,7 +107,7 @@ interface GeyanConfig {
 
 关闭一键登录页面
 
-> 仅iOS支持
+> 仅 iOS 支持
 
 ## Contributing
 

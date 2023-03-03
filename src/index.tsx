@@ -37,7 +37,7 @@ export interface GeyanConfig {
   privacy?: PrivacyItem[];
 }
 
-interface GeyanInitConfig {
+export interface GeyanInitConfig {
   /**
    * 渠道（Android only）
    */
@@ -46,6 +46,18 @@ interface GeyanInitConfig {
    * appid（iOS only）
    */
   appid: string;
+}
+
+export interface GeyanResult {
+  token: string;
+  gyuid: string;
+  code?: number;
+  expiredTime?: number;
+  msg?: string;
+  number?: string;
+  operator?: string;
+  operatorType?: number;
+  processID: string;
 }
 
 /**
@@ -61,7 +73,7 @@ export function init(config: GeyanInitConfig): Promise<string> {
  * @param config
  * @returns
  */
-export function open(config: GeyanConfig): Promise<string> {
+export function open(config: GeyanConfig): Promise<GeyanResult> {
   const resolved = Image.resolveAssetSource(config.logo);
   return Geyan.open({ ...config, logo: resolved.uri });
 }

@@ -5,9 +5,9 @@ import android.content.Intent;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.facebook.react.bridge.ActivityEventListener;
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.BaseActivityEventListener;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -15,6 +15,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.module.annotations.ReactModule;
 import com.g.gysdk.GYManager;
 import com.g.gysdk.GYResponse;
@@ -43,8 +44,15 @@ public class GeyanModule extends ReactContextBaseJavaModule {
       if (requestCode == REQUEST_CODE) {
         if (myPromise != null) {
           if (resultCode == Activity.RESULT_OK) {
-            String token = intent.getStringExtra("token");
-            myPromise.resolve(token);
+            WritableMap payload = Arguments.createMap();
+            payload.putString("token", intent.getStringExtra("token"));
+            payload.putString("gyuid", intent.getStringExtra("gyuid"));
+            payload.putInt("code", intent.getIntExtra("code", -1));
+            payload.putDouble("expiredTime", (double) intent.getLongExtra("expiredTime", -1));
+            payload.putString("operator", intent.getStringExtra("operator"));
+            myPromise.resolve(payload);
+
+            myPromise.resolve(payload);
           }
           // 确保只触发一次
           myPromise = null;
