@@ -37,7 +37,6 @@ public class ELoginActivity extends AppCompatActivity {
   public static final String LOGO_INFO = "com.reactnativegeyan.eloginactivity.logo";
   public static final String PRIVACY_INFO = "com.reactnativegeyan.eloginactivity.privacy";
   private static final String TAG = ELoginActivity.class.getSimpleName();
-  private boolean isBack = false;
   private CheckBox mCheckbox;
   private ProgressDialog dialog;
   @Override
@@ -47,13 +46,12 @@ public class ELoginActivity extends AppCompatActivity {
     ViewUtil.setStatusBarLightMode(true, this);
     setContentView(R.layout.activity_elogin);
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-    toolbar.setNavigationOnClickListener((v) -> { onBackPressed(); isBack = true; });
+    toolbar.setNavigationOnClickListener((v) -> { onBackPressed(); });
     ImageView imageView = (ImageView) findViewById(R.id.logo_imageview);
     String logo = getIntent().getStringExtra(LOGO_INFO);
     Glide.with(this).load(logo).into(imageView);
     elogin();
   }
-
   private void elogin() {
     TextView numberTv = findViewById(R.id.number_textview);
     TextView sloganTv = findViewById(R.id.slogan_textview);
@@ -108,9 +106,14 @@ public class ELoginActivity extends AppCompatActivity {
 
       @Override
       public void onFailed(GYResponse gyResponse) {
-        // 路由返回时不弹出框
-        if (!isBack) {
-          showToast("一键登录失败：" + gyResponse.getMsg());
+        try {
+          JSONObject jsonObject = new JSONObject(gyResponse.getMsg());
+          int errorCode = jsonObject.getInt("errorCode");
+          if (errorCode != -20301) {
+            showToast("一键登录失败：" + gyResponse.getMsg());
+          }
+        } catch(Exception e) {
+          e.printStackTrace();
         }
         hideDialog();
         finish();
