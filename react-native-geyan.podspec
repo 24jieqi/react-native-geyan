@@ -20,6 +20,7 @@ Pod::Spec.new do |s|
 
   s.vendored_frameworks = "ios/SdkLib/GeYanSdk.framework", "ios/SdkLib/GTCommonSDK.framework/"
   s.libraries = "resolv.9"
+  s.resource = "ios/SdkLib/TYRZResource.bundle"
 
   # Don't install the dependencies when we run `pod install` in the old architecture.
   if ENV['RCT_NEW_ARCH_ENABLED'] == '1' then
