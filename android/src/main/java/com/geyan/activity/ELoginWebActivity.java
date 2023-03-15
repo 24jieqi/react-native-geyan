@@ -1,5 +1,6 @@
 package com.geyan.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -11,15 +12,13 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toolbar;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.geyan.R;
 import com.geyan.util.ViewUtil;
 
 /**
  * 一键登录的隐私协议页
  */
-public class ELoginWebActivity extends AppCompatActivity {
+public class ELoginWebActivity extends Activity {
   private WebView webView;
 
   public static void start(Context context, String url, String title) {

@@ -17,8 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.bumptech.glide.Glide;
 import com.g.gysdk.EloginActivityParam;
 import com.g.gysdk.GYManager;
@@ -33,7 +31,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class ELoginActivity extends AppCompatActivity {
+public class ELoginActivity extends Activity {
   public static final String LOGO_INFO = "com.reactnativegeyan.eloginactivity.logo";
   public static final String PRIVACY_INFO = "com.reactnativegeyan.eloginactivity.privacy";
   private static final String TAG = ELoginActivity.class.getSimpleName();
