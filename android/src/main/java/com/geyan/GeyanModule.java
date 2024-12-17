@@ -128,7 +128,9 @@ public class GeyanModule extends ReactContextBaseJavaModule {
       promise.reject("INIT_FAILED", "初始化失败！" + gyResponse.getMsg());
       }
     });
-    GYManager.getInstance().init(builder.build());
+    GYManager manager = GYManager.getInstance();
+    manager.setMacEnable(reactContext, false);
+    manager.init(builder.build());
   }
 }
 
