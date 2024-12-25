@@ -1,6 +1,6 @@
 {
   "name": "react-native-geyan",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "个推-个验一键认证React-Native原生模块",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
