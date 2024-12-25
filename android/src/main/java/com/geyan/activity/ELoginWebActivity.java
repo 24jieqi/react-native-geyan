@@ -97,7 +97,6 @@ public class ELoginWebActivity extends Activity {
       settings.setAllowContentAccess(true);
       settings.setDatabaseEnabled(true);
       settings.setDomStorageEnabled(true);
-      settings.setAppCachePath(this.getCacheDir().getAbsolutePath());
       settings.setCacheMode(WebSettings.LOAD_DEFAULT);
       settings.setUseWideViewPort(true);
       String url = this.getIntent().getStringExtra("url");
